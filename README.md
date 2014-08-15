@@ -10,6 +10,6 @@ Goal is to add complete functionality that is available from the API (unlike the
 Contributions are welcome. Please reach out for API keys (though you should be able to create new keys for testing through imgur). 
 
 Notes:
-- Logging can be written anywhere. Will have proguard strip out logging for release builds. If you have to do special operation that might be expensive to gather logging info, use BuildConfig.DEBUG to determine if that work should be done. 
+- Feel free to log anywhere. Will have proguard strip out logging for release builds. If you have to do special operation that might be expensive to gather logging info, use BuildConfig.DEBUG to determine if that work should be done. 
 
 - Android Library Projects are being used for api and datacontract modules, even though a standard java library would be preferred. These projects depend on the android framework, and AS does not recognize the provided scope properly for dependencies in pure java libraries (https://code.google.com/p/android/issues/detail?id=69481&thanks=69481&ts=1399651923) - so using this for now. 
