@@ -18,6 +18,7 @@ import com.ezimgur.api.impl.gallery.GalleryApiImpl;
 import com.ezimgur.api.impl.image.ImageApiImpl;
 import com.ezimgur.api.impl.message.MessageApiImpl;
 import com.ezimgur.api.impl.notification.NotificationApiImpl;
+import com.ezimgur.service.request.RefreshTokenRequest;
 
 import javax.inject.Singleton;
 
@@ -28,7 +29,11 @@ import dagger.Provides;
  * Created by mharris on 8/14/14.
  * © 2014 NCR Corporation
  */
-@Module(complete = false, library = true)
+@Module(
+        injects = {
+                RefreshTokenRequest.class
+        },
+        complete = false, library = true)
 public class ServiceModule {
 
     @Provides @Singleton

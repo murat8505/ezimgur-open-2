@@ -10,9 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ezimgur.R;
+import com.ezimgur.event.AuthenticationChangedEvent;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.base.BaseFragment;
 import com.ezimgur.ui.login.LoginActivity;
+import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
@@ -59,6 +61,11 @@ public class MenuFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        setLoginText();
+    }
+
+    @Subscribe
+    public void onAuthenticationChanged(AuthenticationChangedEvent event) {
         setLoginText();
     }
 

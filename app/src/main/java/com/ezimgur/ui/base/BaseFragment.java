@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.ezimgur.EzApplication;
 import com.ezimgur.R;
+import com.squareup.otto.Bus;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -17,11 +20,23 @@ import butterknife.ButterKnife;
  */
 public class BaseFragment extends Fragment {
 
+    @Inject
+    protected Bus bus;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         EzApplication.app().inject(this);
+
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        bus.unregister(this);
     }
 
     protected View inflate(LayoutInflater inflater, ViewGroup container, int layoutId) {

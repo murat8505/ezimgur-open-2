@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.ezimgur.EzApplication;
 import com.ezimgur.R;
 import com.ezimgur.datacontract.AuthenticationToken;
+import com.ezimgur.event.AuthenticationChangedEvent;
 import com.ezimgur.service.RequestService;
 import com.ezimgur.service.request.RefreshTokenRequest;
 import com.ezimgur.session.ImgurSession;
@@ -23,6 +24,7 @@ import com.ezimgur.ui.menu.MenuFragment;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -39,6 +41,9 @@ public abstract class BaseActivity extends Activity {
 
     @Inject
     protected ImgurSession session;
+    @Inject
+    protected Bus bus;
+
     protected boolean isRefreshingToken;
 
     @InjectView(R.id.drawer_layout)
@@ -125,6 +130,8 @@ public abstract class BaseActivity extends Activity {
         super.onPause();
 
         session.onLifeCyclePause();
+
+        bus.unregister(this);
     }
 
     @Override
@@ -175,6 +182,8 @@ public abstract class BaseActivity extends Activity {
         public void onRequestSuccess(AuthenticationToken authenticationToken) {
             isRefreshingToken = false;
             session.setAuthenticationToken(authenticationToken);
+            bus.post(new AuthenticationChangedEvent());
+
         }
     };
 
