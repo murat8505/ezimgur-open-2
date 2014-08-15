@@ -28,15 +28,6 @@ public class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         EzApplication.app().inject(this);
-
-        bus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        bus.unregister(this);
     }
 
     protected View inflate(LayoutInflater inflater, ViewGroup container, int layoutId) {

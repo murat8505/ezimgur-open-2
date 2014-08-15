@@ -130,8 +130,6 @@ public abstract class BaseActivity extends Activity {
         super.onPause();
 
         session.onLifeCyclePause();
-
-        bus.unregister(this);
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by mharris on 8/14/14.
@@ -37,20 +38,22 @@ public class MenuFragment extends BaseFragment {
     protected TextView txtLoginStatus;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        bus.unregister(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflate(inflater, container, R.layout.frag_menu);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (session.isAuthenticated()) {
-                    //todo:wire up account page.
-                } else {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
 
         setLoginText();
 
@@ -69,6 +72,17 @@ public class MenuFragment extends BaseFragment {
         setLoginText();
     }
 
+    @OnClick(R.id.frag_menu_ll_login_button)
+    @SuppressWarnings("unused")
+    public void onLoginClicked() {
+        if (session.isAuthenticated()) {
+            //todo:wire up account page.
+        } else {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private void setLoginText() {
         if (session.isAuthenticated()) {
             txtLoginStatus.setText(session.getAccountName());
@@ -76,4 +90,5 @@ public class MenuFragment extends BaseFragment {
             txtLoginStatus.setText(R.string.menuNotLoggedIn);
         }
     }
+
 }
