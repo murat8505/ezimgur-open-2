@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ez imgur</string>
+    <string name="activity_login">redirecting to imgur</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string name="menuNotLoggedIn">TAP TO LOGIN</string>
+</resources>
