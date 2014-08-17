@@ -153,10 +153,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            if (drawerLayout.isDrawerOpen(drawerMenuLayout))
-                drawerLayout.closeDrawer(drawerMenuLayout);
-            else
-                drawerLayout.openDrawer(drawerMenuLayout);
+            toggleNavigationMenu();
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,6 +177,13 @@ public abstract class BaseActivity extends Activity {
         transaction.replace(containerId, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void toggleNavigationMenu() {
+        if (drawerLayout.isDrawerOpen(drawerMenuLayout))
+            drawerLayout.closeDrawer(drawerMenuLayout);
+        else
+            drawerLayout.openDrawer(drawerMenuLayout);
     }
 
     private RequestListener<AuthenticationToken> authListener = new RequestListener<AuthenticationToken>() {

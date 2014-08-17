@@ -2,6 +2,7 @@ package com.ezimgur.ui.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,10 +76,18 @@ public class MenuFragment extends BaseFragment {
         listItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NavigationMenuItem navigationMenuItem = menuAdapter.getItem(position);
+                final NavigationMenuItem navigationMenuItem = menuAdapter.getItem(position);
 
-                Intent intent = new Intent(getActivity(), navigationMenuItem.targetActivity);
-                startActivity(intent);
+                activity().toggleNavigationMenu();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getActivity(), navigationMenuItem.targetActivity);
+                        startActivity(intent);
+                    }
+                }, 145);
+
             }
         });
     }
