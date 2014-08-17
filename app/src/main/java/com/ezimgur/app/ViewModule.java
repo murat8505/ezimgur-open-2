@@ -34,7 +34,7 @@ import dagger.Provides;
 
                 //used in EzApplication
                 ImgurSession.class,
-                AuthenticationApi.class
+                AuthenticationApi.class,
 
         },
         complete = false, library = true)

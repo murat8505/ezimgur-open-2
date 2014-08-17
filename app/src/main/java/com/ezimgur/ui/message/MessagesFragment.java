@@ -2,6 +2,9 @@ package com.ezimgur.ui.message;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,13 +39,15 @@ public class MessagesFragment extends BaseFragment {
 
     private ConversationsAdapter conversationsAdapter;
 
+    private static final String MENU_REFRESH = "refresh";
+
     @Inject
     protected ImgurSession session;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         conversationsAdapter = null;
-        setRetainInstance(true);
+        setHasOptionsMenu(true);
         return inflate(inflater, container, R.layout.frag_messages);
     }
 
@@ -52,20 +57,38 @@ public class MessagesFragment extends BaseFragment {
 
         if (session.isAuthenticated()){
             mTxtStatus.setText("No Messages");
-            loadMessages();
+            loadMessages(false);
         } else
             mTxtStatus.setText("Login from menu to see messages");
 
         getActivity().setTitle("messages");
     }
 
-    private void loadMessages() {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        menu.add(MENU_REFRESH)
+                .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                .setIcon(android.R.drawable.ic_popup_sync);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getTitle().equals(MENU_REFRESH)) {
+            loadMessages(true);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadMessages(boolean forceRefresh) {
         mProgressIndicator.setVisibility(View.VISIBLE);
         mTxtStatus.setVisibility(View.GONE);
 
         //load from network if no conversations cached, otherwise use cache until user refreshes manually.
         List<Conversation> cachedConversations = session.getConversations();
-        if (cachedConversations == null) {
+        if (cachedConversations == null || forceRefresh) {
             activity().getRequestService().execute(new GetConversationsRequest(), conversationsLoaded);
         } else {
             setConversations(cachedConversations);

@@ -1,28 +1,30 @@
 package com.ezimgur.ui.message;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ezimgur.R;
 import com.ezimgur.datacontract.Conversation;
+import com.ezimgur.service.request.DeleteConversationRequest;
 import com.ezimgur.service.request.GetConversationRequest;
+import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.base.BaseFragment;
 import com.ezimgur.ui.message.adapter.MessagesAdapter;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 
+import javax.inject.Inject;
+
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by mharris on 8/16/14.
@@ -34,8 +36,11 @@ public class MessageDetailFragment extends BaseFragment {
     @InjectView(R.id.frag_msg_detail_progress)ProgressBar mProgressIndicator;
     @InjectView(R.id.frag_msg_detail_lv_thread)ListView mListThread;
     @InjectView(R.id.frag_msg_detail_et_reply)EditText mTextReply;
-    @InjectView(R.id.frag_msg_details_btn_send)Button mBtnSend;
-    @InjectView(R.id.frag_msg_detail_ib_delete)ImageButton mBtnDelete;
+
+    @Inject
+    protected ImgurSession session;
+
+    private int convoId;
 
     public static MessageDetailFragment newInstance(int conversationId) {
         MessageDetailFragment detailFragment = new MessageDetailFragment();
@@ -57,7 +62,7 @@ public class MessageDetailFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int convoId = getArguments().getInt("convoId");
+        convoId = getArguments().getInt("convoId");
 
         loadMessageThread(convoId, 0);
     }
@@ -74,23 +79,8 @@ public class MessageDetailFragment extends BaseFragment {
         mListThread.setAdapter(new MessagesAdapter(conversation.messages));
     }
 
-    private void attachViewListeners(){
-        mBtnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replyOnThread();
-            }
-        });
-
-        mBtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteThread();
-            }
-        });
-    }
-
-    private void replyOnThread(){
+    @OnClick(R.id.frag_msg_details_btn_send)
+    protected void replyOnThread(){
         String reply = mTextReply.getText().toString();
 
         if (reply.length() > 0) {
@@ -99,9 +89,24 @@ public class MessageDetailFragment extends BaseFragment {
         }
     }
 
-    private void deleteThread(){
-
+    @OnClick(R.id.frag_msg_detail_ib_delete)
+    protected void deleteThread(){
+        activity().getRequestService().execute(new DeleteConversationRequest(convoId), conversationDeleted);
     }
+
+    private RequestListener<Object> conversationDeleted = new RequestListener<Object>() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(getActivity(), "Unable to delete conversation", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onRequestSuccess(Object o) {
+            //invalidate the cache so messages are reloaded.
+            session.setConversations(null);
+            activity().getFragmentManager().popBackStack();
+        }
+    };
 
     private RequestListener<Conversation> conversationLoaded = new RequestListener<Conversation>() {
         @Override

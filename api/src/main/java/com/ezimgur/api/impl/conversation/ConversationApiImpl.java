@@ -3,6 +3,7 @@ package com.ezimgur.api.impl.conversation;
 import com.ezimgur.api.ConversationApi;
 import com.ezimgur.api.exception.ApiException;
 import com.ezimgur.api.impl.ApiBase;
+import com.ezimgur.api.impl.conversation.request.DeleteConversationRequest;
 import com.ezimgur.api.impl.conversation.request.GetConversationRequest;
 import com.ezimgur.api.impl.conversation.request.GetConversationsRequest;
 import com.ezimgur.datacontract.Conversation;
@@ -38,7 +39,9 @@ public class ConversationApiImpl extends ApiBase implements ConversationApi {
     }
 
     @Override
-    public void deleteConversation(String conversationId) throws ApiException {
+    public void deleteConversation(int conversationId) throws ApiException {
+        DeleteConversationRequest request = new DeleteConversationRequest(conversationId);
 
+        submitApiRequest(request);
     }
 }

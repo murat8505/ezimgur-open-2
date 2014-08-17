@@ -18,6 +18,6 @@ public interface ConversationApi {
 
     public void sendMessage(String reciepient, String message) throws ApiException ;
 
-    public void deleteConversation(String conversationId) throws ApiException ;
+    public void deleteConversation(int conversationId) throws ApiException ;
 
 }
