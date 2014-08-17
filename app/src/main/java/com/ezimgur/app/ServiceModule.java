@@ -18,6 +18,7 @@ import com.ezimgur.api.impl.gallery.GalleryApiImpl;
 import com.ezimgur.api.impl.image.ImageApiImpl;
 import com.ezimgur.api.impl.message.MessageApiImpl;
 import com.ezimgur.api.impl.notification.NotificationApiImpl;
+import com.ezimgur.service.request.GetConversationsRequest;
 import com.ezimgur.service.request.RefreshTokenRequest;
 
 import javax.inject.Singleton;
@@ -31,7 +32,8 @@ import dagger.Provides;
  */
 @Module(
         injects = {
-                RefreshTokenRequest.class
+                RefreshTokenRequest.class,
+                GetConversationsRequest.class
         },
         complete = false, library = true)
 public class ServiceModule {

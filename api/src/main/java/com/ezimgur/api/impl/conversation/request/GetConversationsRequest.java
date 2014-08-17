@@ -3,26 +3,26 @@ package com.ezimgur.api.impl.conversation.request;
 import com.ezimgur.api.ImgurApiConstants;
 import com.ezimgur.api.http.ApiGetRequest;
 import com.ezimgur.datacontract.Basic;
-import com.ezimgur.datacontract.Message;
+import com.ezimgur.datacontract.Conversation;
 
 import java.util.List;
 
 /**
  * Created by mharris on 7/11/14.
  */
-public class GetConversationsRequest extends ApiGetRequest<GetConversationsRequest.GetMessagesResponse> {
+public class GetConversationsRequest extends ApiGetRequest<GetConversationsRequest.GetConversationsResponse> {
 
     @Override
     public String getRequestUrl() {
-        return ImgurApiConstants.URL_MESSAGE_GET_MESSAGES;
+        return ImgurApiConstants.URL_CONVERSATION_GET_ALL;
     }
 
     @Override
-    protected Class<GetMessagesResponse> getResponseClass() {
-        return GetMessagesResponse.class;
+    protected Class<GetConversationsResponse> getResponseClass() {
+        return GetConversationsResponse.class;
     }
 
-    public class GetMessagesResponse extends Basic<List<Message>> {
+    public class GetConversationsResponse extends Basic<List<Conversation>> {
 
     }
 }

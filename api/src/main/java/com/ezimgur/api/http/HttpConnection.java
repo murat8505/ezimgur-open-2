@@ -65,6 +65,9 @@ public class HttpConnection {
 
     public void sendGetRequest(ApiRequest request) throws ApiException {
         String requestUrl = request.getRequestUrl();
+
+        Log.d(TAG, "Sending HTTP GET to " + requestUrl);
+
         HttpGet get = new HttpGet(requestUrl);
         sendRequest(request, get);
     }
@@ -104,10 +107,11 @@ public class HttpConnection {
     }
 
     public<TReq, TRes extends Basic> void sendPostRequest(ApiRequest<TReq, TRes> request) throws ApiException {
-        HttpPost post = new HttpPost(request.getRequestUrl());
+        String url = request.getRequestUrl();
+        HttpPost post = new HttpPost(url);
         String json = request.serializeRequest();
 
-        Log.d(TAG, "Setting HTTP POST request JSON: \n"+json);
+        Log.d(TAG, "Setting HTTP POST to "+ url +" request JSON: \n"+json);
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, HTTP.UTF_8);

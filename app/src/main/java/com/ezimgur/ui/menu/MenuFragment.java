@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +15,12 @@ import com.ezimgur.event.AuthenticationChangedEvent;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.base.BaseFragment;
 import com.ezimgur.ui.login.LoginActivity;
+import com.ezimgur.ui.menu.adapter.NavigationMenuAdapter;
+import com.ezimgur.ui.message.MessageActivity;
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,8 +46,6 @@ public class MenuFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bus.register(this);
     }
 
     @Override
@@ -53,16 +57,37 @@ public class MenuFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflate(inflater, container, R.layout.frag_menu);
+        return inflate(inflater, container, R.layout.frag_menu);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         setLoginText();
 
-        return view;
+        final List<NavigationMenuItem> navItems = new ArrayList<NavigationMenuItem>();
+        navItems.add(new NavigationMenuItem("messages", MessageActivity.class));
+
+        final NavigationMenuAdapter menuAdapter = new NavigationMenuAdapter(navItems);
+        listItems.setAdapter(menuAdapter);
+
+        listItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NavigationMenuItem navigationMenuItem = menuAdapter.getItem(position);
+
+                Intent intent = new Intent(getActivity(), navigationMenuItem.targetActivity);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        bus.register(this);
 
         setLoginText();
     }

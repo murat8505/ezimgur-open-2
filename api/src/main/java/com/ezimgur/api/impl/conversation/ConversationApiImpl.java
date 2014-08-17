@@ -3,8 +3,8 @@ package com.ezimgur.api.impl.conversation;
 import com.ezimgur.api.ConversationApi;
 import com.ezimgur.api.exception.ApiException;
 import com.ezimgur.api.impl.ApiBase;
-import com.ezimgur.api.impl.conversation.request.GetConversationRequest;
 import com.ezimgur.api.impl.conversation.request.GetConversationsRequest;
+import com.ezimgur.datacontract.Conversation;
 import com.ezimgur.datacontract.Message;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ConversationApiImpl extends ApiBase implements ConversationApi {
 
     @Override
-    public List<Message> getConversations() throws ApiException {
+    public List<Conversation> getConversations() throws ApiException {
         GetConversationsRequest request = new GetConversationsRequest();
         submitApiRequest(request);
 

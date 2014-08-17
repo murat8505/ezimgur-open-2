@@ -65,6 +65,7 @@ public class LoginActivity extends BaseActivity {
                     try {
                         AuthenticationToken token = authenticationApi.getTokenFromTokenResponse(uri.getFragment());
                         session.setAuthenticationToken(token);
+                        authenticationApi.setCurrentAuthenticationToken(token);
                     } catch (ApiException e) {
                         Log.d(TAG, "error getting token", e);
                     }

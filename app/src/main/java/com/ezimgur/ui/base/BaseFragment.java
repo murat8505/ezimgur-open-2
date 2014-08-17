@@ -31,10 +31,14 @@ public class BaseFragment extends Fragment {
     }
 
     protected View inflate(LayoutInflater inflater, ViewGroup container, int layoutId) {
-        View view = inflater.inflate(R.layout.frag_menu, container, false);
+        View view = inflater.inflate(layoutId, container, false);
 
         ButterKnife.inject(this, view);
 
         return view;
+    }
+
+    public BaseActivity activity(){
+        return (BaseActivity) getActivity();
     }
 }

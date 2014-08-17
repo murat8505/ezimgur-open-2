@@ -3,11 +3,14 @@ package com.ezimgur.app;
 import android.content.Context;
 
 import com.ezimgur.EzApplication;
+import com.ezimgur.api.AuthenticationApi;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.session.JsonImgurSession;
 import com.ezimgur.ui.gallery.GalleryActivity;
 import com.ezimgur.ui.login.LoginActivity;
 import com.ezimgur.ui.menu.MenuFragment;
+import com.ezimgur.ui.message.MessageActivity;
+import com.ezimgur.ui.message.MessagesFragment;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -23,7 +26,14 @@ import dagger.Provides;
         injects = {
                 GalleryActivity.class,
                 LoginActivity.class,
-                MenuFragment.class
+                MenuFragment.class,
+                MessageActivity.class,
+                MessagesFragment.class,
+
+                //used in EzApplication
+                ImgurSession.class,
+                AuthenticationApi.class
+
         },
         complete = false, library = true)
 public class ViewModule {

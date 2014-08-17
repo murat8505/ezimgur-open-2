@@ -161,6 +161,10 @@ public abstract class BaseActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public SpiceManager getRequestService() {
+        return this.requestService;
+    }
+
     public void refreshAuthenticationTokenIfNeeded() {
         if (session.isAuthenticationExpired() && !isRefreshingToken) {
             AuthenticationToken token = session.getAuthenticationToken();
