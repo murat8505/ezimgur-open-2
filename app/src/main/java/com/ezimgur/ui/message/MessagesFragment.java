@@ -41,6 +41,8 @@ public class MessagesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        conversationsAdapter = null;
+        setRetainInstance(true);
         return inflate(inflater, container, R.layout.frag_messages);
     }
 
@@ -61,20 +63,14 @@ public class MessagesFragment extends BaseFragment {
         mProgressIndicator.setVisibility(View.VISIBLE);
         mTxtStatus.setVisibility(View.GONE);
 
-        activity().getRequestService().execute(new GetConversationsRequest(), new RequestListener<GetConversationsRequest.Conversations>() {
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
-                mTxtStatus.setVisibility(View.VISIBLE);
-                mTxtStatus.setText("Unable to load messages. Imgur may be unreachable or down.");
-                mProgressIndicator.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onRequestSuccess(GetConversationsRequest.Conversations conversations) {
-                setConversations(conversations);
-                mProgressIndicator.setVisibility(View.GONE);
-            }
-        });
+        //load from network if no conversations cached, otherwise use cache until user refreshes manually.
+        List<Conversation> cachedConversations = session.getConversations();
+        if (cachedConversations == null) {
+            activity().getRequestService().execute(new GetConversationsRequest(), conversationsLoaded);
+        } else {
+            setConversations(cachedConversations);
+            mProgressIndicator.setVisibility(View.GONE);
+        }
     }
 
     public void setConversations(List<Conversation> conversations){
@@ -98,11 +94,27 @@ public class MessagesFragment extends BaseFragment {
     private void attachViewListener(){
         mListMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //mEventManager.fire(new OpenMessageDetailEvent(mMessagesAdapter.getItem(i).parentId));
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+                activity().goToChildFragment(R.id.act_message_container, MessageDetailFragment.newInstance((int) id));
             }
         });
     }
+
+    private RequestListener<GetConversationsRequest.Conversations> conversationsLoaded =
+            new RequestListener<GetConversationsRequest.Conversations>() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            mTxtStatus.setVisibility(View.VISIBLE);
+            mTxtStatus.setText("Unable to load messages. Imgur may be unreachable or down.");
+            mProgressIndicator.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onRequestSuccess(GetConversationsRequest.Conversations conversations) {
+            setConversations(conversations);
+            mProgressIndicator.setVisibility(View.GONE);
+        }
+    };
 
     public static MessagesFragment newInstance() {
         return new MessagesFragment();

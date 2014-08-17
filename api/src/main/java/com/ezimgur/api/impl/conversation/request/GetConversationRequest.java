@@ -3,6 +3,7 @@ package com.ezimgur.api.impl.conversation.request;
 import com.ezimgur.api.ImgurApiConstants;
 import com.ezimgur.api.http.ApiGetRequest;
 import com.ezimgur.datacontract.Basic;
+import com.ezimgur.datacontract.Conversation;
 import com.ezimgur.datacontract.Message;
 
 import java.util.List;
@@ -14,14 +15,16 @@ import java.util.List;
 public class GetConversationRequest extends ApiGetRequest<GetConversationRequest.GetConversationResponse> {
 
     private int id;
+    private int page;
 
-    public GetConversationRequest(int id) {
+    public GetConversationRequest(int id, int page) {
         this.id = id;
+        this.page = page;
     }
 
     @Override
     public String getRequestUrl() {
-        return String.format(ImgurApiConstants.URL_MESSAGE_GET_THREAD_BY_ID, this.id);
+        return String.format(ImgurApiConstants.URL_CONVERSATION_GET, this.id, this.page, 0);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class GetConversationRequest extends ApiGetRequest<GetConversationRequest
         return GetConversationResponse.class;
     }
 
-    public class GetConversationResponse extends Basic<List<Message>> {
+    public class GetConversationResponse extends Basic<Conversation> {
 
     }
 }

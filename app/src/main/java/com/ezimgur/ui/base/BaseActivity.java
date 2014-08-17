@@ -1,6 +1,7 @@
 package com.ezimgur.ui.base;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -172,6 +173,13 @@ public abstract class BaseActivity extends Activity {
 
             requestService.execute(new RefreshTokenRequest(token.refreshToken), authListener);
         }
+    }
+
+    public void goToChildFragment(int containerId, Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(containerId, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private RequestListener<AuthenticationToken> authListener = new RequestListener<AuthenticationToken>() {

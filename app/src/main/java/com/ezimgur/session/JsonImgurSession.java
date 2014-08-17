@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.ezimgur.datacontract.AuthenticationToken;
+import com.ezimgur.datacontract.Conversation;
 import com.ezimgur.serializer.GsonUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -65,6 +68,17 @@ public class JsonImgurSession implements ImgurSession {
     public void logoutUser() {
         sessionState.token = null;
         needsToSave = true;
+    }
+
+    @Override
+    public void setConversations(List<Conversation> conversations) {
+        this.sessionState.conversations = conversations;
+        needsToSave = true;
+    }
+
+    @Override
+    public List<Conversation> getConversations() {
+        return this.sessionState.conversations;
     }
 
     private void restoreStateFromPersisetence() {

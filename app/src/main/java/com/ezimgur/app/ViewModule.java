@@ -10,6 +10,7 @@ import com.ezimgur.ui.gallery.GalleryActivity;
 import com.ezimgur.ui.login.LoginActivity;
 import com.ezimgur.ui.menu.MenuFragment;
 import com.ezimgur.ui.message.MessageActivity;
+import com.ezimgur.ui.message.MessageDetailFragment;
 import com.ezimgur.ui.message.MessagesFragment;
 import com.squareup.otto.Bus;
 
@@ -29,6 +30,7 @@ import dagger.Provides;
                 MenuFragment.class,
                 MessageActivity.class,
                 MessagesFragment.class,
+                MessageDetailFragment.class,
 
                 //used in EzApplication
                 ImgurSession.class,

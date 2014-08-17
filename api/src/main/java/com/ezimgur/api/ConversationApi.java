@@ -2,7 +2,6 @@ package com.ezimgur.api;
 
 import com.ezimgur.api.exception.ApiException;
 import com.ezimgur.datacontract.Conversation;
-import com.ezimgur.datacontract.Message;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public interface ConversationApi {
 
     public List<Conversation> getConversations() throws ApiException;
 
-    public Message getConversation(String messageId) throws ApiException ;
+    public Conversation getConversation(int conversationId, int page) throws ApiException ;
 
     public void sendMessage(String reciepient, String message) throws ApiException ;
 

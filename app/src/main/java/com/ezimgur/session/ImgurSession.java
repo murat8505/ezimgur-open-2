@@ -1,6 +1,9 @@
 package com.ezimgur.session;
 
 import com.ezimgur.datacontract.AuthenticationToken;
+import com.ezimgur.datacontract.Conversation;
+
+import java.util.List;
 
 /**
  * Created by mharris on 8/14/14.
@@ -21,4 +24,8 @@ public interface ImgurSession {
     AuthenticationToken getAuthenticationToken();
 
     void logoutUser();
+
+    void setConversations(List<Conversation> conversations);
+
+    List<Conversation> getConversations();
 }

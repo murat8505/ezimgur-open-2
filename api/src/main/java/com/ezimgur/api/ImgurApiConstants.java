@@ -56,6 +56,8 @@ public class ImgurApiConstants {
     public static final String URL_MESSAGE_DELETE = "https://api.imgur.com/3/message/%s";
 
     public static final String URL_CONVERSATION_GET_ALL = "https://api.imgur.com/3/conversations";
+    //id, page, offset
+    public static final String URL_CONVERSATION_GET = "https://api.imgur.com/3/conversations/%s/%s/%s";
 
     public static final String CLIENT_ID = "ask_for_key";
     public static final String CLIENT_SECRET = "ask_for_key";

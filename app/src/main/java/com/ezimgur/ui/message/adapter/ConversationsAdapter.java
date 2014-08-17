@@ -59,7 +59,7 @@ public class ConversationsAdapter extends BaseAdapter {
 
         holder.txtTitle.setText("from " + conversation.withAccountUsername);
         CharSequence time = DateUtils.getRelativeTimeSpanString(conversation.datetime * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-        holder.txtDate.setText(String.valueOf(time));
+        holder.txtDate.setText(time);
         holder.txtBody.setText(conversation.lastMessagePreview);
         holder.txtSubject.setText(conversation.messageCount + " messages");
 
