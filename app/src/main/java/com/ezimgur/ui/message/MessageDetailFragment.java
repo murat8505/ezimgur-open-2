@@ -1,9 +1,11 @@
 package com.ezimgur.ui.message;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -12,14 +14,18 @@ import android.widget.Toast;
 
 import com.ezimgur.R;
 import com.ezimgur.datacontract.Conversation;
+import com.ezimgur.service.request.CreateMessageRequest;
 import com.ezimgur.service.request.DeleteConversationRequest;
 import com.ezimgur.service.request.GetConversationRequest;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.base.BaseFragment;
+import com.ezimgur.ui.message.adapter.MessageComparator;
 import com.ezimgur.ui.message.adapter.MessagesAdapter;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -41,12 +47,14 @@ public class MessageDetailFragment extends BaseFragment {
     protected ImgurSession session;
 
     private int convoId;
+    private String from;
 
-    public static MessageDetailFragment newInstance(int conversationId) {
+    public static MessageDetailFragment newInstance(int conversationId, String from) {
         MessageDetailFragment detailFragment = new MessageDetailFragment();
 
         Bundle args = new Bundle();
         args.putInt("convoId", conversationId);
+        args.putString("from", from);
 
         detailFragment.setArguments(args);
 
@@ -62,7 +70,9 @@ public class MessageDetailFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        convoId = getArguments().getInt("convoId");
+        Bundle args = getArguments();
+        convoId = args.getInt("convoId");
+        from = args.getString("from");
 
         loadMessageThread(convoId, 0);
     }
@@ -84,7 +94,10 @@ public class MessageDetailFragment extends BaseFragment {
         String reply = mTextReply.getText().toString();
 
         if (reply.length() > 0) {
-
+            mProgressIndicator.setVisibility(View.VISIBLE);
+            //invalidate old cache so messages are reloaded.
+            session.setConversations(null);
+            activity().getRequestService().execute(new CreateMessageRequest(from, reply), replySent);
 
         }
     }
@@ -93,6 +106,23 @@ public class MessageDetailFragment extends BaseFragment {
     protected void deleteThread(){
         activity().getRequestService().execute(new DeleteConversationRequest(convoId), conversationDeleted);
     }
+
+    private RequestListener<Object> replySent = new RequestListener<Object>() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+
+        }
+
+        @Override
+        public void onRequestSuccess(Object o) {
+            loadMessageThread(convoId, 0);
+            mTextReply.setText("");
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mTextReply.getWindowToken(), 0);
+        }
+
+    };
 
     private RequestListener<Object> conversationDeleted = new RequestListener<Object>() {
         @Override
@@ -117,6 +147,8 @@ public class MessageDetailFragment extends BaseFragment {
         @Override
         public void onRequestSuccess(Conversation conversation) {
             mProgressIndicator.setVisibility(View.GONE);
+
+            Collections.sort(conversation.messages, new MessageComparator());
             setConversation(conversation);
         }
     };

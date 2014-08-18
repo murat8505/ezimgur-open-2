@@ -18,6 +18,7 @@ import com.ezimgur.api.impl.gallery.GalleryApiImpl;
 import com.ezimgur.api.impl.image.ImageApiImpl;
 import com.ezimgur.api.impl.message.MessageApiImpl;
 import com.ezimgur.api.impl.notification.NotificationApiImpl;
+import com.ezimgur.service.request.CreateMessageRequest;
 import com.ezimgur.service.request.DeleteConversationRequest;
 import com.ezimgur.service.request.GetConversationRequest;
 import com.ezimgur.service.request.GetConversationsRequest;
@@ -37,7 +38,8 @@ import dagger.Provides;
                 RefreshTokenRequest.class,
                 GetConversationsRequest.class,
                 GetConversationRequest.class,
-                DeleteConversationRequest.class
+                DeleteConversationRequest.class,
+                CreateMessageRequest.class
         },
         complete = false, library = true)
 public class ServiceModule {

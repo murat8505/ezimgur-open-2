@@ -118,7 +118,8 @@ public class MessagesFragment extends BaseFragment {
         mListMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
-                activity().goToChildFragment(R.id.act_message_container, MessageDetailFragment.newInstance((int) id));
+                Conversation convo = conversationsAdapter.getItem(i);
+                activity().goToChildFragment(R.id.act_message_container, MessageDetailFragment.newInstance(convo.id, convo.withAccountUsername));
             }
         });
     }

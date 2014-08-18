@@ -3,6 +3,7 @@ package com.ezimgur.api.impl.conversation;
 import com.ezimgur.api.ConversationApi;
 import com.ezimgur.api.exception.ApiException;
 import com.ezimgur.api.impl.ApiBase;
+import com.ezimgur.api.impl.conversation.request.CreateConversationMessageRequest;
 import com.ezimgur.api.impl.conversation.request.DeleteConversationRequest;
 import com.ezimgur.api.impl.conversation.request.GetConversationRequest;
 import com.ezimgur.api.impl.conversation.request.GetConversationsRequest;
@@ -35,7 +36,9 @@ public class ConversationApiImpl extends ApiBase implements ConversationApi {
 
     @Override
     public void sendMessage(String reciepient, String message) throws ApiException {
+        CreateConversationMessageRequest request = new CreateConversationMessageRequest(reciepient, message);
 
+        submitApiRequest(request);
     }
 
     @Override
