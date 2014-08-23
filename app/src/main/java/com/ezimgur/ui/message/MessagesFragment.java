@@ -61,6 +61,12 @@ public class MessagesFragment extends BaseFragment {
         } else
             mTxtStatus.setText("Login from menu to see messages");
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         getActivity().setTitle("messages");
     }
 
@@ -119,7 +125,7 @@ public class MessagesFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
                 Conversation convo = conversationsAdapter.getItem(i);
-                activity().goToChildFragment(R.id.act_message_container, MessageDetailFragment.newInstance(convo.id, convo.withAccountUsername));
+                activity().goToChildFragment(R.id.act_main_container, MessageDetailFragment.newInstance(convo.id, convo.withAccountUsername));
             }
         });
     }

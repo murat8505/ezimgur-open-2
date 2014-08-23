@@ -53,6 +53,8 @@ public abstract class BaseActivity extends Activity {
     protected FrameLayout contentFrame;
     private ActionBarDrawerToggle drawerToggle;
 
+    private boolean hasBeenAdded;
+
     private static final String TAG = "EzImgur.BaseActivity";
 
     @Override
@@ -184,6 +186,20 @@ public abstract class BaseActivity extends Activity {
             drawerLayout.closeDrawer(drawerMenuLayout);
         else
             drawerLayout.openDrawer(drawerMenuLayout);
+    }
+
+    public void goToFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (!hasBeenAdded) {
+            transaction.add(R.id.act_main_container, fragment);
+            hasBeenAdded = true;
+        } else {
+            transaction.replace(R.id.act_main_container, fragment);
+        }
+
+
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private RequestListener<AuthenticationToken> authListener = new RequestListener<AuthenticationToken>() {

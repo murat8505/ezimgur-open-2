@@ -6,10 +6,10 @@ import com.ezimgur.EzApplication;
 import com.ezimgur.api.AuthenticationApi;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.session.JsonImgurSession;
-import com.ezimgur.ui.gallery.GalleryActivity;
+import com.ezimgur.ui.MainActivity;
+import com.ezimgur.ui.account.AccountFragment;
 import com.ezimgur.ui.login.LoginActivity;
 import com.ezimgur.ui.menu.MenuFragment;
-import com.ezimgur.ui.message.MessageActivity;
 import com.ezimgur.ui.message.MessageDetailFragment;
 import com.ezimgur.ui.message.MessagesFragment;
 import com.squareup.otto.Bus;
@@ -25,12 +25,13 @@ import dagger.Provides;
  */
 @Module (
         injects = {
-                GalleryActivity.class,
                 LoginActivity.class,
+                MainActivity.class,
+
                 MenuFragment.class,
-                MessageActivity.class,
                 MessagesFragment.class,
                 MessageDetailFragment.class,
+                AccountFragment.class,
 
                 //used in EzApplication
                 ImgurSession.class,

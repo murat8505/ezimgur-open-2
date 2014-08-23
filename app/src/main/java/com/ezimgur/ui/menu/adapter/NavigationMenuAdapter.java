@@ -39,7 +39,7 @@ public class NavigationMenuAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return menuItems.get(position).targetActivity.hashCode();
+        return menuItems.get(position).targetFragment.hashCode();
     }
 
     @Override
