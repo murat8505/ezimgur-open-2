@@ -18,6 +18,7 @@ import com.ezimgur.event.AuthenticationChangedEvent;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.account.AccountFragment;
 import com.ezimgur.ui.base.BaseFragment;
+import com.ezimgur.ui.gallery.GalleryFragment;
 import com.ezimgur.ui.login.LoginActivity;
 import com.ezimgur.ui.menu.adapter.NavigationMenuAdapter;
 import com.ezimgur.ui.message.MessagesFragment;
@@ -73,7 +74,9 @@ public class MenuFragment extends BaseFragment {
         setLoginText();
 
         final List<NavigationMenuItem> navItems = new ArrayList<NavigationMenuItem>();
+        navItems.add(new NavigationMenuItem("gallery", GalleryFragment.class));
         navItems.add(new NavigationMenuItem("messages", MessagesFragment.class));
+
 
         final NavigationMenuAdapter menuAdapter = new NavigationMenuAdapter(navItems);
         listItems.setAdapter(menuAdapter);

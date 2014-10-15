@@ -4,6 +4,7 @@ import com.ezimgur.api.ImgurApiConstants;
 import com.ezimgur.api.http.ApiGetRequest;
 import com.ezimgur.api.impl.gallery.response.ResponseContainer;
 import com.ezimgur.datacontract.GallerySort;
+import com.ezimgur.datacontract.GalleryType;
 
 /**
  * Created by EggmanProjects.
@@ -13,19 +14,19 @@ import com.ezimgur.datacontract.GallerySort;
  */
 public class LoadGalleryRequest extends ApiGetRequest<ResponseContainer.GalleryLoadContainer> {
 
-    private String galleryName;
+    private GalleryType type;
     private GallerySort sort;
     private int page;
 
-    public LoadGalleryRequest(String galleryName, GallerySort sort, int page) {
-        this.galleryName = galleryName;
+    public LoadGalleryRequest(GalleryType type, GallerySort sort, int page) {;
+        this.type = type;
         this.sort = sort;
         this.page = page;
     }
 
     @Override
     public String getRequestUrl() {
-       return String.format(ImgurApiConstants.URL_GALLERY_LOAD, galleryName.toLowerCase(), GallerySort.getSortStringForTargetType(sort, !galleryName.contains("r/")), page);
+       return String.format(ImgurApiConstants.URL_GALLERY_LOAD, type.toString().toLowerCase(), GallerySort.getValueForApi(sort), page);
     }
 
     @Override

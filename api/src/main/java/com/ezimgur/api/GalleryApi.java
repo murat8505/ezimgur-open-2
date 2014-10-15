@@ -77,13 +77,13 @@ public interface GalleryApi {
 
     /**
      * Loads a gallery with the given name, sort, and page.
-     * @param galleryName
+     * @param type
      * @param sort
      * @param page
      * @return returns a list of gallery items that will be a image or album at runtime.
      * @throws com.ezimgur.api.exception.ApiException
      */
-    public List<GalleryItem> getGalleryItems(String galleryName, GallerySort sort, int page) throws ApiException;
+    public List<GalleryItem> getGalleryItems(GalleryType type, GallerySort sort, int page)  throws ApiException;
 
     /**
      * Reports a image to imgur as spam or abuse.

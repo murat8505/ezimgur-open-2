@@ -1,31 +1,26 @@
 package com.ezimgur.datacontract;
 
 /**
- * Created by EggmanProjects.
- * User: matthewharris
- * Date: 12/14/12
- * Time: 9:26 PM
+ * Created by mharris on 10/14/14.
+ * © 2014 NCR Corporation
  */
-public enum GallerySort {
+public enum  GallerySort {
+    POPULARITY,
+    NEWEST_FIRST,
+    HIGHEST_SCORING,
+    RISING;
 
-    TOP,
-    TIME;
-
-    /**
-     * Used to turn the sort into the actual URL sort string - the sort is different for subreddits in comparison to
-     * imgur gallery.
-     * @param sort sort by hot or new
-     * @param isImgur is the gallery name a imgur gallery?
-     * @return a string that can be used in a request url
-     */
-    public static String getSortStringForTargetType(GallerySort sort, boolean isImgur) {
-        if (isImgur){
-            if (sort == TOP)
+    public static String getValueForApi(GallerySort sort) {
+        switch (sort){
+            case POPULARITY:
                 return "viral";
-            else
+            case NEWEST_FIRST:
                 return "time";
+            case HIGHEST_SCORING:
+                return "top";
+            case RISING:
+                return "rising";
         }
-        else return sort.toString().toLowerCase();
+        return null;
     }
 }
-

@@ -84,9 +84,9 @@ public class GalleryApiImpl extends ApiBase implements GalleryApi {
     }
 
     @Override
-    public List<GalleryItem> getGalleryItems(String galleryName, GallerySort sort, int page) throws ApiException {
+    public List<GalleryItem> getGalleryItems(GalleryType type, GallerySort sort, int page) throws ApiException {
 
-        LoadGalleryRequest request = new LoadGalleryRequest(galleryName, sort, page);
+        LoadGalleryRequest request = new LoadGalleryRequest(type, sort, page);
         submitApiRequest(request);
 
         return request.getItemToReceive().data;

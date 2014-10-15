@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.ezimgur.datacontract.AuthenticationToken;
 import com.ezimgur.datacontract.Conversation;
+import com.ezimgur.datacontract.GalleryItem;
 import com.ezimgur.serializer.GsonUtils;
 
 import java.util.List;
@@ -79,6 +80,17 @@ public class JsonImgurSession implements ImgurSession {
     @Override
     public List<Conversation> getConversations() {
         return this.sessionState.conversations;
+    }
+
+    @Override
+    public void setCurrentGalleryItems(List<GalleryItem> items) {
+        this.sessionState.galleryItems = items;
+        needsToSave = true;
+    }
+
+    @Override
+    public List<GalleryItem> getCurrentGalleryItems() {
+        return this.sessionState.galleryItems;
     }
 
     private void restoreStateFromPersisetence() {
