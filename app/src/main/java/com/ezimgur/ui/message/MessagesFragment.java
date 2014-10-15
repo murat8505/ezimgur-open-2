@@ -56,10 +56,10 @@ public class MessagesFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (session.isAuthenticated()){
-            mTxtStatus.setText("No Messages");
+            mTxtStatus.setText(getString(R.string.messages_you_have_none));
             loadMessages(false);
         } else
-            mTxtStatus.setText("Login from menu to see messages");
+            mTxtStatus.setText(getString(R.string.messages_you_must_login));
 
     }
 
@@ -67,7 +67,7 @@ public class MessagesFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        getActivity().setTitle("messages");
+        getActivity().setTitle(getString(R.string.messages_fragment_title));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MessagesFragment extends BaseFragment {
             attachViewListener();
         } else {
             mTxtStatus.setVisibility(View.VISIBLE);
-            mTxtStatus.setText("You have no messages.");
+            mTxtStatus.setText(getString(R.string.messages_you_have_none));
         }
     }
 
@@ -135,7 +135,7 @@ public class MessagesFragment extends BaseFragment {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
             mTxtStatus.setVisibility(View.VISIBLE);
-            mTxtStatus.setText("Unable to load messages. Imgur may be unreachable or down.");
+            mTxtStatus.setText(getString(R.string.default_request_failure));
             mProgressIndicator.setVisibility(View.GONE);
         }
 

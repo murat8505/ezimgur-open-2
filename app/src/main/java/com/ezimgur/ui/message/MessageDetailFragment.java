@@ -85,7 +85,7 @@ public class MessageDetailFragment extends BaseFragment {
     }
 
     public void setConversation(Conversation conversation){
-        mTxtSubject.setText("convo with " + conversation.withAccountUsername);
+        mTxtSubject.setText(getString(R.string.messages_convo_with) + conversation.withAccountUsername);
         mListThread.setAdapter(new MessagesAdapter(conversation.messages));
     }
 
@@ -127,7 +127,7 @@ public class MessageDetailFragment extends BaseFragment {
     private RequestListener<Object> conversationDeleted = new RequestListener<Object>() {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(getActivity(), "Unable to delete conversation", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.messages_convo_unable_to_delete), Toast.LENGTH_LONG).show();
         }
 
         @Override

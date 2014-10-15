@@ -4,4 +4,10 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
     <string name="menuNotLoggedIn">TAP TO LOGIN</string>
+    <string name="default_request_failure">Unable to load messages. Imgur may be unreachable or down.</string>
+    <string name="messages_you_have_none">You have no messages.</string>
+    <string name="messages_you_must_login">Login from menu to see messages</string>
+    <string name="messages_fragment_title">messages</string>
+    <string name="messages_convo_with">convo with </string>
+    <string name="messages_convo_unable_to_delete">Unable to delete conversation</string>
 </resources>
