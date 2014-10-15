@@ -6,7 +6,7 @@ import com.ezimgur.datacontract.Basic;
 
 /**
  * Created by mharris on 8/17/14.
- * © 2014 NCR Corporation
+ *
  */
 public class DeleteConversationRequest extends ApiDeleteRequest<Basic> {
 

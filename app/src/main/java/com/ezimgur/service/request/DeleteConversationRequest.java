@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 /**
  * Created by mharris on 8/17/14.
- * © 2014 NCR Corporation
+ *
  */
 public class DeleteConversationRequest extends BaseRequest<Object> {
 

@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * Created by mharris on 8/17/14.
- * © 2014 NCR Corporation
+ *
  */
 public class MessageComparator implements Comparator<Message> {
 

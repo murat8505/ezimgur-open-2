@@ -5,7 +5,7 @@ import com.octo.android.robospice.request.SpiceRequest;
 
 /**
  * Created by mharris on 8/14/14.
- * © 2014 NCR Corporation
+ *
  */
 public abstract class BaseRequest<TResponseType> extends SpiceRequest<TResponseType> {
 

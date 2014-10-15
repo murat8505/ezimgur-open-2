@@ -6,7 +6,7 @@ import android.view.View;
 
 /**
  * Created by mharris on 8/16/14.
- * © 2014 NCR Corporation
+ *
  */
 public class UiBuilder {
 

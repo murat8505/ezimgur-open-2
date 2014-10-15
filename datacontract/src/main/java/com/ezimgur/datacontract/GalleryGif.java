@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by mharris on 10/14/14.
- * © 2014 NCR Corporation
+ *
  */
 public class GalleryGif extends GalleryImage {
 

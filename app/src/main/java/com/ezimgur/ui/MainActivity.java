@@ -7,7 +7,7 @@ import com.ezimgur.ui.base.BaseActivity;
 
 /**
  * Created by mharris on 8/22/14.
- * © 2014 NCR Corporation
+ *
  */
 public class MainActivity extends BaseActivity {
 

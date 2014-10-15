@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 /**
  * Created by mharris on 10/14/14.
- * © 2014 NCR Corporation
+ *
  */
 public class GetGalleryRequest extends BaseRequest<GalleryResponse> {
 

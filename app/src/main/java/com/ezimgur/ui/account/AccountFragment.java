@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 /**
  * Created by mharris on 8/22/14.
- * © 2014 NCR Corporation
+ *
  */
 public class AccountFragment extends BaseFragment {
 

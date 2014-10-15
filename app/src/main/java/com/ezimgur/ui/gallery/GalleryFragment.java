@@ -27,7 +27,7 @@ import butterknife.InjectView;
 
 /**
  * Created by mharris on 10/14/14.
- * © 2014 NCR Corporation
+ *
  */
 public class GalleryFragment extends BaseFragment {
 
