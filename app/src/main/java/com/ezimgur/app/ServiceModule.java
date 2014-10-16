@@ -20,6 +20,7 @@ import com.ezimgur.api.impl.message.MessageApiImpl;
 import com.ezimgur.api.impl.notification.NotificationApiImpl;
 import com.ezimgur.service.request.CreateMessageRequest;
 import com.ezimgur.service.request.DeleteConversationRequest;
+import com.ezimgur.service.request.GetCaptionsRequest;
 import com.ezimgur.service.request.GetConversationRequest;
 import com.ezimgur.service.request.GetConversationsRequest;
 import com.ezimgur.service.request.GetGalleryRequest;
@@ -41,7 +42,8 @@ import dagger.Provides;
                 GetConversationRequest.class,
                 DeleteConversationRequest.class,
                 CreateMessageRequest.class,
-                GetGalleryRequest.class
+                GetGalleryRequest.class,
+                GetCaptionsRequest.class,
         },
         complete = false, library = true)
 public class ServiceModule {

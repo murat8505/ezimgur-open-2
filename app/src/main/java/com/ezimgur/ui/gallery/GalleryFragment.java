@@ -3,8 +3,12 @@ package com.ezimgur.ui.gallery;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.ezimgur.R;
@@ -37,6 +41,7 @@ public class GalleryFragment extends BaseFragment {
     @Inject
     protected ImgurSession session;
 
+    private static final int MENU_REFRESH = 0;
     private static final String TAG = "EzImgur.GalleryFragment";
 
     @Override
@@ -48,6 +53,14 @@ public class GalleryFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setHasOptionsMenu(true);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                activity().goToFragment(GalleryItemPagerFragment.newInstance(position));
+            }
+        });
         loadGalleryItemsFromCacheOrNetwork();
     }
 
@@ -56,6 +69,28 @@ public class GalleryFragment extends BaseFragment {
         super.onResume();
 
         getActivity().setTitle("gallery");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        if (menu.size() == 0) {
+            menu.add(0, MENU_REFRESH, Menu.CATEGORY_SYSTEM, "refresh")
+                    .setIcon(android.R.drawable.ic_popup_sync)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == MENU_REFRESH) {
+            loadGalleryFromNetwork();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadGalleryItemsFromCacheOrNetwork() {

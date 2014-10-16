@@ -45,6 +45,7 @@ dependencies {
 
     compile 'com.octo.android.robospice:robospice:1.4.13'
 
+    compile 'com.android.support:support-v13:19.+'
     compile 'com.android.support:support-v4:19.1.0'
 
 }

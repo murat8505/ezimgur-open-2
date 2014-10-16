@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="14dp"
+    android:background="@color/main_menu"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/view_header_image_details_tv_title"
+        android:textColor="@color/WhiteSmoke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"/>
+    <TextView
+        android:id="@+id/view_header_image_details_tv_author"
+        android:layout_below="@+id/view_header_image_details_tv_title"
+        android:textColor="@color/SlateGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

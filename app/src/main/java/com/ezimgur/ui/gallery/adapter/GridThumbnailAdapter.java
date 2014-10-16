@@ -91,7 +91,7 @@ public class GridThumbnailAdapter extends BaseAdapter {
                         }
                     }
 
-                    return true;
+                    return false;
                 }
             });
 

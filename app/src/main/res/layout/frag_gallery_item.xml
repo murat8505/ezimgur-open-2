@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ezimgur.ui.widget.ParallaxListView
+        android:id="@+id/frag_gallery_item_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:parallax_factor="1.9"
+        android:background="@color/Black"
+        android:divider="@color/ezimgur_red_slight_transparent"
+        android:dividerHeight="1dp"/>
+
+</LinearLayout>

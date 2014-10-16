@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.ezimgur.R;
 import com.ezimgur.ui.base.BaseActivity;
+import com.ezimgur.ui.gallery.GalleryFragment;
 
 /**
  * Created by mharris on 8/22/14.
@@ -16,6 +17,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         //go to first fragment eventually here.
+        goToFragment(new GalleryFragment());
     }
 
     @Override

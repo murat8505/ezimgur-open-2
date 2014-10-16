@@ -195,10 +195,9 @@ public abstract class BaseActivity extends Activity {
             hasBeenAdded = true;
         } else {
             transaction.replace(R.id.act_main_container, fragment);
+            transaction.addToBackStack(null);
         }
 
-
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 

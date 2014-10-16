@@ -9,6 +9,8 @@ import com.ezimgur.session.JsonImgurSession;
 import com.ezimgur.ui.MainActivity;
 import com.ezimgur.ui.account.AccountFragment;
 import com.ezimgur.ui.gallery.GalleryFragment;
+import com.ezimgur.ui.gallery.GalleryItemFragment;
+import com.ezimgur.ui.gallery.GalleryItemPagerFragment;
 import com.ezimgur.ui.gallery.adapter.GridThumbnailAdapter;
 import com.ezimgur.ui.login.LoginActivity;
 import com.ezimgur.ui.menu.MenuFragment;
@@ -36,6 +38,8 @@ import dagger.Provides;
                 AccountFragment.class,
 
                 GalleryFragment.class,
+                GalleryItemFragment.class,
+                GalleryItemPagerFragment.class,
 
                 //used in EzApplication
                 ImgurSession.class,

@@ -24,6 +24,7 @@ public class GsonUtils {
                     .registerTypeAdapter(Date.class, new DateTimeDeserializer())
                     .registerTypeAdapter(GalleryItem.class, new GalleryItemDeserializer())
                     .registerTypeAdapter(NotificationContent.class, new NotificationSerializer())
+                    .registerTypeAdapter(GalleryItem.class, new GalleryItemSerializer())
                     //.registerTypeAdapter(Basic.class, new BasicDeserializer())
                     .create();
         }
