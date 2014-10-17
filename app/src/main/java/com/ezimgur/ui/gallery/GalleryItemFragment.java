@@ -1,9 +1,13 @@
 package com.ezimgur.ui.gallery;
 
+import android.app.ActionBar;
+import android.gesture.Gesture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -95,6 +99,7 @@ public class GalleryItemFragment extends BaseFragment{
         ivImage = (ImageView) imageHeader.findViewById(R.id.view_header_image_iv_image);
         vvMovie = (VideoView) imageHeader.findViewById(R.id.view_header_image_vv_movie);
 
+        activity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
         captionAdapter = new CaptionAdapter(item, new ArrayList<Comment>(), getFragmentManager());
         lvImage.setAdapter(captionAdapter);
@@ -104,6 +109,30 @@ public class GalleryItemFragment extends BaseFragment{
         if (!isAlbum) {
             loadImageAndSetViewState(currentImage);
         }
+
+        final GestureDetector.SimpleOnGestureListener tapDetector = new GestureDetector.SimpleOnGestureListener() {
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+
+                Toast.makeText(getActivity(), "DOUBLE TAP...YO", Toast.LENGTH_LONG).show();
+                //todo:add quick zoom, and double double tap open fullsize.
+                return true;
+            }
+        };
+        final GestureDetector detector = new GestureDetector(getActivity(), tapDetector);
+
+        ivImage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return detector.onTouchEvent(event);
+            }
+        });
     }
 
     @Override
@@ -111,6 +140,7 @@ public class GalleryItemFragment extends BaseFragment{
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser) {
+            activity().setTitle(item.id);
             shown = true;
             if (!animationStarted && vvMovie != null) {
                 vvMovie.start();

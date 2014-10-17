@@ -17,10 +17,6 @@ public class ResizingImageView extends ImageView {
     private int mMaxWidth;
     private int mMaxHeight;
 
-    public ResizingImageView(Context context) {
-        super(context);
-    }
-
     public ResizingImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
