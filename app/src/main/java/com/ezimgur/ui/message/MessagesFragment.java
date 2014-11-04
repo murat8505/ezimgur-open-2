@@ -61,6 +61,7 @@ public class MessagesFragment extends BaseFragment {
         } else
             mTxtStatus.setText(getString(R.string.messages_you_must_login));
 
+        activity().getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
     }
 
     @Override

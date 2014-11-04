@@ -2,19 +2,27 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/Black"
+    android:background="@color/main_menu"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/view_header_image_title"
+        android:textColor="@color/White"
+        android:layout_margin="10dp"
+        android:textSize="17sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <com.ezimgur.ui.widget.ResizingImageView
         android:id="@+id/view_header_image_iv_image"
+        android:layout_below="@+id/view_header_image_title"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:layout_width="wrap_content"
         android:layout_centerInParent="true"
         android:layout_height="wrap_content"
-        android:maxHeight="475dp"
-        android:minHeight="300dp"/>
+        android:minHeight="100dp"/>
     <VideoView
         android:id="@+id/view_header_image_vv_movie"
+        android:layout_below="@+id/view_header_image_title"
         android:layout_width="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"

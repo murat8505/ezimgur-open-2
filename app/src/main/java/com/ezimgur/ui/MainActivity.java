@@ -1,6 +1,7 @@
 package com.ezimgur.ui;
 
 import android.os.Bundle;
+import android.view.Window;
 
 import com.ezimgur.R;
 import com.ezimgur.ui.base.BaseActivity;
@@ -16,8 +17,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         //go to first fragment eventually here.
         goToFragment(new GalleryFragment());
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     @Override

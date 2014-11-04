@@ -2,12 +2,22 @@
 <resources>
     <!-- the theme applied to the application or activity -->
     <style name="Theme.EzImgur"
-        parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/selectable_light_ezimgur</item>
+        <item name="android:background">@color/ezimgur_red_slight_transparent</item>
+        <item name="background">@color/ezimgur_red_slight_transparent</item>
+        <item name="titleTextStyle">@style/TitleText</item>
+        <item name="android:titleTextStyle">@style/TitleText</item>
+    </style>
+
+    <style name="TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/White</item>
     </style>
 </resources>

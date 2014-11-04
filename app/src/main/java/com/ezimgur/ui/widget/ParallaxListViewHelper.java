@@ -2,8 +2,12 @@ package com.ezimgur.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -76,11 +80,52 @@ public class ParallaxListViewHelper implements OnScrollListener {
             }
         }
     }
+    boolean tooBigForParallax;
+    boolean tooBigTestRun;
 
-    private void headerParallax() {
+    private synchronized void headerParallax() {
         if (parallaxedView != null) {
+
+            /*
+            Only run parallax effect if image is smaller than screen, otherwise it does not look
+            good. Using:
+
+            the location of the view on screen (getLocationOnScreen(int[]))
+            the width/height of the view (getMeasuredHeight() and getMeasuredWidth())
+            the width/height of the screen
+
+             */
+            View view = parallaxedView.view.get();
+            if (!tooBigTestRun) {
+                int[] location = new int[2];
+
+                view.getLocationOnScreen(location);
+
+                int headerViewY = location[1];
+                int headerViewHeight = view.getHeight();
+
+                int totalHeaderHeight = headerViewY + headerViewHeight;
+
+                WindowManager wm = (WindowManager) view.getContext().getSystemService(Context.WINDOW_SERVICE);
+                Display display = wm.getDefaultDisplay();
+                Point screenSize = new Point();
+                display.getSize(screenSize);
+                int screenHeight = screenSize.y;
+
+                if (totalHeaderHeight > screenHeight) {
+                    tooBigForParallax = true;
+                    tooBigTestRun = true;
+                    ((ClippingRelativeLayout)view).disableClipping();
+                }
+            }
+
+            if (tooBigForParallax)
+                return;
+
             if (listView.getChildCount() > 0) {
                 int top = -listView.getChildAt(0).getTop();
+                int bottom = parallaxedView.view.get().getBottom();
+
                 if (top >= 0) {
                     setFilters(top);
                 }
@@ -89,30 +134,36 @@ public class ParallaxListViewHelper implements OnScrollListener {
     }
 
     private void setFilters(int top) {
-        parallaxedView.setOffset((float)top / parallaxFactor);
-        if (alphaFactor != DEFAULT_ALPHA_FACTOR) {
-            float alpha = (top <= 0) ? 1 : (100 / ((float)top * alphaFactor));
-            parallaxedView.setAlpha(alpha);
+        if (!tooBigForParallax) {
+            parallaxedView.setOffset((float) top / parallaxFactor);
+            if (alphaFactor != DEFAULT_ALPHA_FACTOR) {
+                float alpha = (top <= 0) ? 1 : (100 / ((float) top * alphaFactor));
+                parallaxedView.setAlpha(alpha);
+            }
+            parallaxedView.animateNow();
         }
-        parallaxedView.animateNow();
     }
 
     private void fillParallaxedViews() {
-        if (parallaxedView == null || parallaxedView.is(listView.getChildAt(0)) == false) {
-            if (parallaxedView != null) {
-                resetFilters();
-                parallaxedView.setView(listView.getChildAt(0));
-            } else {
-                parallaxedView = new ListViewParallaxedItem(listView.getChildAt(0));
+        if (!tooBigForParallax) {
+            if (parallaxedView == null || parallaxedView.is(listView.getChildAt(0)) == false) {
+                if (parallaxedView != null) {
+                    resetFilters();
+                    parallaxedView.setView(listView.getChildAt(0));
+                } else {
+                    parallaxedView = new ListViewParallaxedItem(listView.getChildAt(0));
+                }
             }
         }
     }
 
     private void resetFilters() {
-        parallaxedView.setOffset(0);
-        if (alphaFactor != DEFAULT_ALPHA_FACTOR)
-            parallaxedView.setAlpha(1F);
-        parallaxedView.animateNow();
+        if (!tooBigForParallax) {
+            parallaxedView.setOffset(0);
+            if (alphaFactor != DEFAULT_ALPHA_FACTOR)
+                parallaxedView.setAlpha(1F);
+            parallaxedView.animateNow();
+        }
     }
 
     @Override
@@ -136,11 +187,13 @@ public class ParallaxListViewHelper implements OnScrollListener {
 
         @Override
         protected void translatePreICS(View view, float offset) {
-            TranslateAnimation ta = new TranslateAnimation(0, 0, offset, offset);
-            ta.setDuration(0);
-            ta.setFillAfter(true);
-            view.setAnimation(ta);
-            ta.start();
+            if (!tooBigForParallax) {
+                TranslateAnimation ta = new TranslateAnimation(0, 0, offset, offset);
+                ta.setDuration(0);
+                ta.setFillAfter(true);
+                view.setAnimation(ta);
+                ta.start();
+            }
         }
     }
 }

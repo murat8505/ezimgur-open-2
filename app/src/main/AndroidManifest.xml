@@ -9,12 +9,11 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
 
     <application android:allowBackup="true"
-        android:label="@string/app_name"
         android:name=".EzApplication"
         android:icon="@drawable/ez_icon"
         android:theme="@style/Theme.EzImgur">
 
-        <activity android:name=".ui.MainActivity" android:label="@string/app_name">
+        <activity android:name=".ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

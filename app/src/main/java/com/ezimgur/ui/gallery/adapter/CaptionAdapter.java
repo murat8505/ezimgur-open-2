@@ -2,10 +2,10 @@ package com.ezimgur.ui.gallery.adapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateUtils;
@@ -24,6 +24,8 @@ import com.ezimgur.ui.base.UiBuilder;
 import com.ezimgur.ui.utils.RichTextUtils;
 import com.ezimgur.ui.utils.URLSpanConverter;
 import com.ezimgur.ui.utils.VoteUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -74,10 +76,12 @@ public class CaptionAdapter extends BaseAdapter {
         if (i == 0) {
             View headerView = UiBuilder.inflate(viewGroup.getContext(), R.layout.view_header_image_details);
 
-            TextView tvTitle = (TextView) headerView.findViewById(R.id.view_header_image_details_tv_title);
             TextView tvAuthor = (TextView) headerView.findViewById(R.id.view_header_image_details_tv_author);
+            TextView tvTimeAgo = (TextView) headerView.findViewById(R.id.view_header_image_details_tv_time_ago);
+            TextView tvPoints = (TextView) headerView.findViewById(R.id.view_header_image_details_tv_points);
 
-            tvTitle.setText(item.title);
+            tvTimeAgo.setText(DateUtils.getRelativeTimeSpanString(item.dateCreated.getTime(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS));
+            tvPoints.setText(item.score + " points");
             if (item.accountUrl != null) {
                 tvAuthor.setText("by " + item.accountUrl);
             }

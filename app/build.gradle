@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 21
     buildToolsVersion "19.1.0"
 
     defaultConfig {
@@ -45,7 +45,7 @@ dependencies {
 
     compile 'com.octo.android.robospice:robospice:1.4.13'
 
-    compile 'com.android.support:support-v13:19.+'
+    compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.android.support:support-v4:19.1.0'
 
 }

@@ -18,6 +18,6 @@ public class DateTimeSerializer implements JsonSerializer<Date> {
 
     @Override
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.getTime());
+        return new JsonPrimitive(src.getTime() / 1000);
     }
 }

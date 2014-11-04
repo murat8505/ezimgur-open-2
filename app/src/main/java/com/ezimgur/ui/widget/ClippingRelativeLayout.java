@@ -12,20 +12,32 @@ import android.widget.RelativeLayout;
  */
 public class ClippingRelativeLayout extends RelativeLayout {
 
+    private boolean disabled;
     private int offset;
+
 
     public ClippingRelativeLayout(Context context) {
         super(context);
     }
 
+    public void disableClipping(){
+        this.disabled = true;
+    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvas.clipRect(new Rect(getLeft(), getTop(), getRight(), getBottom() + offset));
+        if (!disabled){
+            canvas.clipRect(new Rect(getLeft(), getTop(), getRight(), getBottom() + offset));
+        }
+
         super.dispatchDraw(canvas);
     }
 
     public void setClipY(int offset) {
         this.offset = offset;
-        invalidate();
+
+        if (!disabled) {
+            invalidate();
+        }
     }
 }

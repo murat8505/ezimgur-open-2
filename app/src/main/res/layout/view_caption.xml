@@ -7,8 +7,7 @@
     android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/caption_container"
-        android:paddingLeft="5dip"
-        android:layout_marginRight="10dip"
+        android:padding="7dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -21,18 +20,18 @@
                 android:gravity="bottom"
                 android:textColor="@color/text_accent"
                 android:layout_marginTop="5dip"
-                android:textSize="16dip"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <TextView
             android:layout_toRightOf="@id/points_container"
             android:id="@+id/cv_caption"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/DimGray"
             android:linksClickable="true"
             android:autoLink="web"
             android:minLines="2"
-            android:paddingRight="12dip"
+            android:paddingRight="12dp"
             android:layout_width="fill_parent"
             android:ellipsize="end"
             android:layout_height="wrap_content"/>

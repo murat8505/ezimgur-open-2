@@ -1,6 +1,6 @@
 package com.ezimgur.ui.menu;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by mharris on 8/16/14.

@@ -2,18 +2,26 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="14dp"
+    android:padding="5dp"
     android:background="@color/main_menu"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/view_header_image_details_tv_title"
-        android:textColor="@color/WhiteSmoke"
+        android:id="@+id/view_header_image_details_tv_time_ago"
+        android:textColor="@color/White"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="1dp"/>
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/view_header_image_details_tv_points"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toRightOf="@+id/view_header_image_details_tv_time_ago"
+        android:layout_toEndOf="@+id/view_header_image_details_tv_time_ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/view_header_image_details_tv_author"
-        android:layout_below="@+id/view_header_image_details_tv_title"
+        android:layout_below="@+id/view_header_image_details_tv_points"
         android:textColor="@color/SlateGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

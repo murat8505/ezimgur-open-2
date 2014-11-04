@@ -1,6 +1,7 @@
 package com.ezimgur.ui.gallery.adapter;
 
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,8 +78,11 @@ public class GridThumbnailAdapter extends BaseAdapter {
                         case MotionEvent.ACTION_DOWN: {
                             ImageView view = (ImageView) v;
                             //overlay is black with transparency of 0x77 (119)
-                            view.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-                            view.invalidate();
+                            Drawable drawable = view.getDrawable();
+                            if (drawable != null) {
+                                drawable.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                                view.invalidate();
+                            }
                             break;
                         }
                         case MotionEvent.ACTION_UP:

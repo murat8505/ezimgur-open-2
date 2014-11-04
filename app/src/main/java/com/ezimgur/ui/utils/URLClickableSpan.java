@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import com.ezimgur.ui.gallery.DialogContentViewer;
+
 
 /**
  * Created by EggmanProjects.
@@ -48,8 +50,8 @@ public class URLClickableSpan extends ClickableSpan {
             Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
             act.startActivity(youtubeIntent);
         } else {
-//            DialogContentViewer dialog = DialogContentViewer.newInstance(mUrl);
-//            dialog.show(manager, TAG);
+            DialogContentViewer dialog = DialogContentViewer.newInstance(mUrl);
+            dialog.show(manager, TAG);
         }
     }
 

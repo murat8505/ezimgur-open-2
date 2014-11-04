@@ -1,7 +1,9 @@
 package com.ezimgur.ui.gallery;
 
-import android.app.ActionBar;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,11 +11,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.ezimgur.R;
 import com.ezimgur.datacontract.GalleryItem;
@@ -45,10 +47,13 @@ public class GalleryFragment extends BaseFragment {
     protected Spinner spinSort;
     @InjectView(R.id.view_gallery_action_bar_sp_days)
     protected Spinner spinDays;
+    @InjectView(R.id.frag_gallery_progress)
+    protected SwipeRefreshLayout refreshLayout;
 
     @Inject
     protected ImgurSession session;
 
+    private GalleryType currentType;
     private static final int MENU_REFRESH = 0;
     private static final String TAG = "EzImgur.GalleryFragment";
 
@@ -61,20 +66,56 @@ public class GalleryFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new String[]{"Most Viral", "User Submitted"});
+        final ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new String[]{"Most Viral", "User Submitted", "Reddit"});
 
         /** Defining Navigation listener */
         ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(activity(), "You selected : ", Toast.LENGTH_SHORT).show();
+
+                switch (itemPosition) {
+                    case 0:
+                        changeGallery(GalleryType.HOT);
+                        return true;
+                    case 1:
+                        changeGallery(GalleryType.NEW);
+                        return true;
+                    case 2:
+                        openCustomGalleryDialog();
+                }
+
                 return false;
             }
         };
 
-        activity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        activity().getActionBar().setListNavigationCallbacks(typeAdapter, navigationListener);
+        //refreshLayout.setDistanceToTriggerSync(0);
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem <= 0) {
+                    refreshLayout.setEnabled(true);
+                } else {
+                    refreshLayout.setEnabled(false
+                    );
+                }
+            }
+        });
+        refreshLayout.setColorSchemeColors(R.color.ezimgur_green_slight_transparent, R.color.ezimgur_red_slight_transparent);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadGalleryFromNetwork();
+            }
+        });
+
+        activity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        activity().getSupportActionBar().setListNavigationCallbacks(typeAdapter, navigationListener);
 
         ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new String[]{"Popularity", "Newest First", "Highest Scoring"});
         spinSort.setAdapter(sortAdapter);
@@ -97,30 +138,7 @@ public class GalleryFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        getActivity().setTitle("");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        if (menu.size() == 0) {
-            menu.add(0, MENU_REFRESH, Menu.CATEGORY_SYSTEM, "refresh")
-                    .setIcon(android.R.drawable.ic_popup_sync)
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == MENU_REFRESH) {
-            loadGalleryFromNetwork();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        activity().getSupportActionBar().setTitle("");
     }
 
     private void loadGalleryItemsFromCacheOrNetwork() {
@@ -136,7 +154,7 @@ public class GalleryFragment extends BaseFragment {
     }
 
     private void loadGalleryFromNetwork() {
-        activity().getRequestService().execute(new GetGalleryRequest(GalleryType.HOT, GallerySort.POPULARITY, 0), galleryLoaded);
+        activity().getRequestService().execute(new GetGalleryRequest(currentType, GallerySort.POPULARITY, 0), galleryLoaded);
     }
 
     private void setItemsToGrid(List<GalleryItem> items) {
@@ -147,14 +165,31 @@ public class GalleryFragment extends BaseFragment {
 
         @Override
         public void onRequestFailure(SpiceException e) {
-
+            refreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onRequestSuccess(GalleryResponse galleryResponse) {
             Log.d(TAG, "gallery loaded");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(false);
+                }
+            }, 1000);
+
+
             session.setCurrentGalleryItems(galleryResponse.items);
             setItemsToGrid(galleryResponse.items);
         }
     };
+
+    private void changeGallery(GalleryType type) {
+        currentType = type;
+        loadGalleryFromNetwork();
+    }
+
+    private void openCustomGalleryDialog() {
+
+    }
 }

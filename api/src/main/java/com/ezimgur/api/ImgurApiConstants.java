@@ -61,8 +61,8 @@ public class ImgurApiConstants {
     public static final String URL_CONVERSATION_DELETE = "https://api.imgur.com/3/conversations/%s";
     public static final String URL_CONVERSATION_CREATE = "https://api.imgur.com/3/conversations/%s";
 
-    public static final String CLIENT_ID = "x";
-    public static final String CLIENT_SECRET = "x";
+    public static final String CLIENT_ID = "b86d301956fea91";
+    public static final String CLIENT_SECRET = "77e31bbe0ff83e02f6f64d896927c087a88c2382";
     public static final String OAUTH_URL = "https://api.imgur.com/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=%s";
     public static final String OAUTH_REFRESH_TOKEN_URL = "https://api.imgur.com/oauth2/token";
 

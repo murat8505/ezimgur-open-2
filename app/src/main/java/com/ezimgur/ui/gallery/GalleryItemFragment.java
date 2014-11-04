@@ -2,16 +2,21 @@ package com.ezimgur.ui.gallery;
 
 import android.app.ActionBar;
 import android.gesture.Gesture;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.ezimgur.EzApplication;
@@ -32,7 +37,9 @@ import com.ezimgur.ui.gallery.adapter.CaptionAdapter;
 import com.ezimgur.ui.widget.ParallaxListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -74,6 +81,7 @@ public class GalleryItemFragment extends BaseFragment{
     private boolean shown;
     private boolean animationStarted;
 
+
     public static GalleryItemFragment newInstance(int itemIndex) {
         GalleryItemFragment fragment = new GalleryItemFragment();
 
@@ -91,19 +99,21 @@ public class GalleryItemFragment extends BaseFragment{
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         View imageHeader = View.inflate(getActivity(), R.layout.view_header_image, null);
 
         ivImage = (ImageView) imageHeader.findViewById(R.id.view_header_image_iv_image);
         vvMovie = (VideoView) imageHeader.findViewById(R.id.view_header_image_vv_movie);
-
-        activity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        TextView tvTitle = (TextView) imageHeader.findViewById(R.id.view_header_image_title);
 
         captionAdapter = new CaptionAdapter(item, new ArrayList<Comment>(), getFragmentManager());
         lvImage.setAdapter(captionAdapter);
         lvImage.addParallaxedHeaderView(imageHeader);
+        tvTitle.setHint(item.title);
+
+        activity().getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
 
         transformGalleryItemToTarget();
         if (!isAlbum) {
@@ -120,8 +130,8 @@ public class GalleryItemFragment extends BaseFragment{
             @Override
             public boolean onDoubleTap(MotionEvent e) {
 
-                Toast.makeText(getActivity(), "DOUBLE TAP...YO", Toast.LENGTH_LONG).show();
-                //todo:add quick zoom, and double double tap open fullsize.
+                DialogContentViewer viewer =  DialogContentViewer.newInstance(imageApi.getHttpUrlForImage(currentImage, ImageSize.ACTUAL_SIZE));
+                viewer.show(getFragmentManager(), "FULL-SIZE");
                 return true;
             }
         };
@@ -140,7 +150,9 @@ public class GalleryItemFragment extends BaseFragment{
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser) {
+            activity().getSupportActionBar().setTitle(item.id);
             activity().setTitle(item.id);
+            activity().getSupportActionBar().setDisplayShowHomeEnabled(true);
             shown = true;
             if (!animationStarted && vvMovie != null) {
                 vvMovie.start();
@@ -185,12 +197,7 @@ public class GalleryItemFragment extends BaseFragment{
                 ivImage.setMinimumHeight(image.height);
                 ivImage.setMinimumWidth(image.width);
                 ImageLoader imageLoader = EzApplication.getImageLoader();
-                DisplayImageOptions options = new DisplayImageOptions.Builder()
-                        .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
-                        .resetViewBeforeLoading(true)
-                        .showImageOnLoading(android.R.drawable.progress_indeterminate_horizontal)
-                        .build();
-                imageLoader.displayImage(imageUrl, ivImage, options);
+                imageLoader.displayImage(imageUrl, ivImage);
             } catch (OutOfMemoryError error) {
                 Toast.makeText(getActivity(), "not enough memory to keep showing images...", Toast.LENGTH_LONG).show();
             }

@@ -1,12 +1,13 @@
 package com.ezimgur.ui.base;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ import butterknife.InjectView;
  * Created by mharris on 8/14/14.
  *
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends ActionBarActivity {
 
     protected SpiceManager requestService = new SpiceManager(RequestService.class);
 
@@ -71,7 +72,7 @@ public abstract class BaseActivity extends Activity {
      * the child activity class.
      */
     private void setupMenu() {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         View baseView = View.inflate(this, R.layout.act_base, null);
         contentFrame = (FrameLayout) baseView.findViewById(R.id.content_frame);
@@ -81,7 +82,7 @@ public abstract class BaseActivity extends Activity {
         ButterKnife.inject(this);
 
         MenuFragment menuFragment = new MenuFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.left_drawer, menuFragment);
         transaction.commit();
 
@@ -103,8 +104,8 @@ public abstract class BaseActivity extends Activity {
 
         drawerLayout.setDrawerListener(drawerToggle);
 
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -175,7 +176,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void goToChildFragment(int containerId, Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(containerId, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -189,7 +190,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void goToFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (!hasBeenAdded) {
             transaction.add(R.id.act_main_container, fragment);
             hasBeenAdded = true;

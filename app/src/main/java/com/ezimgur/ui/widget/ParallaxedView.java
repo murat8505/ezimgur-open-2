@@ -19,6 +19,7 @@ public abstract class ParallaxedView {
     protected WeakReference<View> view;
     protected int lastOffset;
     protected List<Animation> animations;
+    private boolean isActive = true;
 
     abstract protected void translatePreICS(View view, float offset);
 
@@ -77,6 +78,7 @@ public abstract class ParallaxedView {
     }
 
     protected synchronized void animateNow() {
+
         View view = this.view.get();
         if (view != null) {
             AnimationSet set = new AnimationSet(true);
