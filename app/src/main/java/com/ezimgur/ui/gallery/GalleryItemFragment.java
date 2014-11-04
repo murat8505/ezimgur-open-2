@@ -1,22 +1,16 @@
 package com.ezimgur.ui.gallery;
 
-import android.app.ActionBar;
-import android.gesture.Gesture;
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.ezimgur.EzApplication;
@@ -31,15 +25,13 @@ import com.ezimgur.datacontract.Image;
 import com.ezimgur.datacontract.ImageSize;
 import com.ezimgur.service.request.CaptionsResponse;
 import com.ezimgur.service.request.GetCaptionsRequest;
+import com.ezimgur.service.request.ImagesResponse;
+import com.ezimgur.service.request.LoadAlbumImagesRequest;
 import com.ezimgur.session.ImgurSession;
 import com.ezimgur.ui.base.BaseFragment;
 import com.ezimgur.ui.gallery.adapter.CaptionAdapter;
 import com.ezimgur.ui.widget.ParallaxListView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -77,6 +69,7 @@ public class GalleryItemFragment extends BaseFragment{
 
     private boolean isGif;
     private boolean isAlbum;
+    private int albumIndex;
 
     private boolean shown;
     private boolean animationStarted;
@@ -118,6 +111,8 @@ public class GalleryItemFragment extends BaseFragment{
         transformGalleryItemToTarget();
         if (!isAlbum) {
             loadImageAndSetViewState(currentImage);
+        } else {
+            activity().getRequestService().execute(new LoadAlbumImagesRequest(album.id), albumImagesLoaded);
         }
 
         final GestureDetector.SimpleOnGestureListener tapDetector = new GestureDetector.SimpleOnGestureListener() {
@@ -176,10 +171,25 @@ public class GalleryItemFragment extends BaseFragment{
     }
 
     private void loadImageAndSetViewState(Image image) {
+        if (image == null)
+            return;
 
+        currentImage = image;
+
+        if (image.animated) {
+            isGif = true;
+        }
 
         if (isGif) {
-            vvMovie.setVideoURI(Uri.parse(gif.movieUrl));
+            if (isAlbum) {
+                vvMovie.setVideoURI(Uri.parse(image.movieUrl));
+                vvMovie.setMinimumHeight(image.height);
+                vvMovie.setMinimumWidth(image.width);
+            } else {
+                vvMovie.setVideoURI(Uri.parse(gif.movieUrl));
+                vvMovie.setMinimumHeight(gif.height);
+                vvMovie.setMinimumWidth(gif.width);
+            }
             vvMovie.setVisibility(View.VISIBLE);
             vvMovie.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -215,6 +225,7 @@ public class GalleryItemFragment extends BaseFragment{
         } else if (isGif) {
             isGif = true;
             gif = (GalleryGif) item;
+            currentImage = gif.toImage();
         } else {
             isAlbum = false;
             image  = (GalleryImage) item;
@@ -231,6 +242,20 @@ public class GalleryItemFragment extends BaseFragment{
         @Override
         public void onRequestSuccess(CaptionsResponse captionsResponse) {
             captionAdapter.setCaptions(item, captionsResponse.captions);
+        }
+    };
+
+    private RequestListener<ImagesResponse> albumImagesLoaded = new RequestListener<ImagesResponse>() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+
+        }
+
+        @Override
+        public void onRequestSuccess(ImagesResponse imagesResponse) {
+            album.images = imagesResponse.images;
+
+            loadImageAndSetViewState(album.images.get(albumIndex));
         }
     };
 }

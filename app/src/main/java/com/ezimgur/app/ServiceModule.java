@@ -24,6 +24,7 @@ import com.ezimgur.service.request.GetCaptionsRequest;
 import com.ezimgur.service.request.GetConversationRequest;
 import com.ezimgur.service.request.GetConversationsRequest;
 import com.ezimgur.service.request.GetGalleryRequest;
+import com.ezimgur.service.request.LoadAlbumImagesRequest;
 import com.ezimgur.service.request.RefreshTokenRequest;
 
 import javax.inject.Singleton;
@@ -44,6 +45,7 @@ import dagger.Provides;
                 CreateMessageRequest.class,
                 GetGalleryRequest.class,
                 GetCaptionsRequest.class,
+                LoadAlbumImagesRequest.class,
         },
         complete = false, library = true)
 public class ServiceModule {
